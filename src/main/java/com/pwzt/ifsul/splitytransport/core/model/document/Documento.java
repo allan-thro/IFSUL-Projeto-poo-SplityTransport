@@ -3,10 +3,12 @@ package com.pwzt.ifsul.splitytransport.core.model.document;
 import com.pwzt.ifsul.splitytransport.core.model.states.DocStatus;
 import com.pwzt.ifsul.splitytransport.core.model.states.DocStatusConverter;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "DOC_BASE")
 @Entity
+@Data
 
 public class Documento {
 
