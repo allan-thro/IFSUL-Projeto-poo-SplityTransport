@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "CTE_CTE")
 @Entity
 @Data
-public class Cte extends Documento{
+public class CTe extends Documento{
 
     @Column(name = "CTE_CHAVE")
     private String chaveCte;

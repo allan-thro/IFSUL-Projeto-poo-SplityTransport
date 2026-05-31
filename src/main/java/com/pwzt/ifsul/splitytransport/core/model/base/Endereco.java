@@ -13,6 +13,9 @@ public class Endereco {
     @Column(name = "END_ID")
     private Long id;
 
+    @Column(name = "END_CEP")
+    private String cep;
+
     @Column(name = "END_LOGRADOURO")
     private String logradouro;
 
