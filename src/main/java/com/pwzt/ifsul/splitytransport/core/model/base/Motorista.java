@@ -11,6 +11,7 @@ import tools.jackson.databind.introspect.BasicClassIntrospector;
 public class Motorista {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MOT_ID")
     private Long id;
 
     @Column(name = "MOT_NOME")

@@ -21,6 +21,7 @@ public class Endereco {
 
     @Column(name = "END_NUMERO")
     private String numero;
+
     @Column(name = "END_BAIRRO")
     private String bairro;
 

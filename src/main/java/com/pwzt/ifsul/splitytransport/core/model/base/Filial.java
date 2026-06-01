@@ -14,9 +14,8 @@ public class Filial {
     @Column(name = "FIL_CNPJ")
     private String cnpj;
 
-    @OneToOne
-    @JoinColumn(name = "END_ID")
-    @Column(name = "FIL_ENDERECO")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FIL_ENDERECO", referencedColumnName = "END_ID")
     private Endereco enderecoSede;
 
     @Column(name = "FIL_RAZAOSOCIAL")

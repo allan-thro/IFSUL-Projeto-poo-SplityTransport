@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 public class Veiculo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "VEI_ID")
     private Long id;
 
     @Column(name = "VEI_PLACA")
