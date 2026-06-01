@@ -1,5 +1,6 @@
 package com.pwzt.ifsul.splitytransport.core.model.base;
 
+import com.pwzt.ifsul.splitytransport.core.factory.DocumentoFactory;
 import com.pwzt.ifsul.splitytransport.core.model.document.CIOT;
 import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
 import com.pwzt.ifsul.splitytransport.core.model.document.Documento;
@@ -8,6 +9,8 @@ import com.pwzt.ifsul.splitytransport.core.model.states.TransporteStatusConverte
 import com.pwzt.ifsul.splitytransport.core.model.states.TsRascunho;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +18,12 @@ import java.time.LocalDateTime;
 @Entity
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Transporte {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TRA_CODIGO")
     private Long id;
 
     @Convert(converter = TransporteStatusConverter.class)
@@ -33,24 +39,20 @@ public class Transporte {
     @Column(name = "TRA_DHTERMINO")
     private LocalDateTime dataHoraTermino;
 
-    @ManyToOne
-    @JoinColumn(name = "MOT_ID")
-    @Column(name = "TRA_MOTORISTA")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRA_MOTORISTA", referencedColumnName = "MOT_ID")
     private Motorista motorista;
 
-    @ManyToOne
-    @JoinColumn(name = "VEI_ID")
-    @Column(name = "TRA_VEICULO")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRA_VEICULO", referencedColumnName = "VEI_ID")
     private Veiculo veiculo;
 
-    @OneToOne
-    @JoinColumn(name = "DOC_ID")
-    @Column(name = "TRA_CTE")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRA_CTE", referencedColumnName = "DOC_ID")
     private CTe cte;
 
-    @OneToOne
-    @JoinColumn(name = "DOC_ID")
-    @Column(name = "TRA_CIOT")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRA_CIOT", referencedColumnName = "DOC_ID")
     private CIOT ciot;
 
     public Transporte(Motorista motorista, Veiculo veiculo){
@@ -58,7 +60,8 @@ public class Transporte {
         this.motorista = motorista;
         this.veiculo = veiculo;
         this.dataHoraEmissao = LocalDateTime.now();
-        this.cte = new CTe()
+        this.cte = DocumentoFactory.createDocRascunho(CTe.class);
+        this.ciot = DocumentoFactory.createDocRascunho(CIOT.class);
     }
 
 }

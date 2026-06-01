@@ -23,8 +23,7 @@ public class Cliente {
     private String razaoSocial;
 
     @ManyToOne
-    @JoinColumn(name = "END_ID")
-    @Column(name = "CLI_ENDERECO")
+    @JoinColumn(name = "CLI_ENDERECO", referencedColumnName = "END_ID")
     private Endereco endereco;
 
 }
