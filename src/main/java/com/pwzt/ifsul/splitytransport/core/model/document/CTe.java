@@ -33,19 +33,16 @@ public class CTe extends Documento{
     @Column(name = "CTE_MUNSDET")
     private String municipioDestino;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CLI_CODIGO")
-    @Column(name = "CTE_EMITENTE")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CTE_EMITENTE", referencedColumnName = "CLI_ID")
     private Cliente emitente;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CLI_CODIGO")
-    @Column(name = "CTE_REMETENTE")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CTE_REMETENTE", referencedColumnName = "CLI_ID")
     private Cliente remetente;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CLI_CODIGO")
-    @Column(name = "CTE_DESTINATARIO")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CTE_DESTINATARIO", referencedColumnName = "CLI_ID")
     private Cliente destinatario;
 
     @Column(name = "CTE_VALORLIQUIDO")

@@ -1,12 +1,22 @@
 package com.pwzt.ifsul.splitytransport.core.factory;
 
+import com.pwzt.ifsul.splitytransport.core.exception.DocumentoDeclaracaoException;
 import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
 import com.pwzt.ifsul.splitytransport.core.model.document.Documento;
+import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocumentoTipo;
+import com.pwzt.ifsul.splitytransport.core.model.states.DsRascunho;
 
 public class DocumentoFactory {
 
-    public static <T extends Documento> T createDocRascunho(Class c){
+    public static <T extends Documento> T createDocRascunho(Class<T> classe){
+        try{
+            T documento = classe.getDeclaredConstructor().newInstance();
+            documento.setStatus(new DsRascunho());
 
+            return documento;
+        }catch (Exception e){
+            throw new DocumentoDeclaracaoException("Erro ao criar novo documento");
+        }
     }
 
 }

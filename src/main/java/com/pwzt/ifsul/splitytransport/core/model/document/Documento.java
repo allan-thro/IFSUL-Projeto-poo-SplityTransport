@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @MappedSuperclass
-@Table(name = "DOC_BASE")
-@Entity
 @Data
 
 public class Documento {
