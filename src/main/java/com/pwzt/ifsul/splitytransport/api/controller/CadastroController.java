@@ -6,6 +6,7 @@ import com.pwzt.ifsul.splitytransport.api.dto.request.cadastro.VeiculoDTO;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
 import com.pwzt.ifsul.splitytransport.api.service.CadastroService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cadastro")
 @RestController
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CadastroController {
 
-    private CadastroService cadastroService;
+    private final CadastroService cadastroService;
 
     @PostMapping("/motorista")
     public ResponseEntity<ResponseApi> cadastrarMotorista(@RequestBody MotoristaDTO motoristaDTO){
