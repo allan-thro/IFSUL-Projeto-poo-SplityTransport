@@ -1,9 +1,7 @@
 package com.pwzt.ifsul.splitytransport.core.factory;
 
-import com.pwzt.ifsul.splitytransport.core.exception.DocumentoDeclaracaoException;
-import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
+import com.pwzt.ifsul.splitytransport.core.exception.DocumentoValidationException;
 import com.pwzt.ifsul.splitytransport.core.model.document.Documento;
-import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocumentoTipo;
 import com.pwzt.ifsul.splitytransport.core.model.states.DsRascunho;
 
 public class DocumentoFactory {
@@ -15,7 +13,7 @@ public class DocumentoFactory {
 
             return documento;
         }catch (Exception e){
-            throw new DocumentoDeclaracaoException("Erro ao criar novo documento");
+            throw new DocumentoValidationException("Erro ao criar novo documento");
         }
     }
 

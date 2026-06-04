@@ -1,33 +1,38 @@
 package com.pwzt.ifsul.splitytransport.core.model.states;
 
-public class DsAutorizado implements DocStatus{
+import com.pwzt.ifsul.splitytransport.core.complextype.cte.TcCTE;
+import com.pwzt.ifsul.splitytransport.core.model.document.Documento;
+
+public class DsAutorizado implements DocStatus {
+
+
     @Override
-    public void emitir() {
+    public void emitir(Documento doc) {
 
     }
 
     @Override
-    public void cancelar() {
+    public void cancelar(Documento doc) {
 
     }
 
     @Override
-    public void consultar() {
+    public void consultar(Documento doc) {
 
     }
 
     @Override
-    public void autorizar() {
+    public void autorizar(Documento doc) {
 
     }
 
     @Override
-    public void rejeitar() {
+    public void rejeitar(Documento doc) {
 
     }
 
     @Override
-    public void corrigir() {
+    public void corrigir(Documento doc) {
 
     }
 }

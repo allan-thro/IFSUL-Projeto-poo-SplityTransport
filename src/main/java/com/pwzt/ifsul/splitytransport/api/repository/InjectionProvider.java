@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class RepositoryFactory {
+public class InjectionProvider {
 
     @Autowired
     private MotoristaReposotory motoristaReposotoryInject;
@@ -21,17 +21,27 @@ public class RepositoryFactory {
     @Autowired
     private TransporteRepository transporteRepositoryInject;
 
+    @Autowired
+    private ClienteRepository clienteRepositoryInject;
+
+    @Autowired
+    private CTeReposotory cteReposotoryInject;
+
+    @Getter private static ClienteRepository clienteRepository;
     @Getter private static TransporteRepository transporteRepository;
     @Getter private static MotoristaReposotory motoristaReposotory;
     @Getter private static VeiculoRepository veiculoRepository;
     @Getter private static FilialRepository filialRepository;
+    @Getter private static CTeReposotory cteReposotory;
 
     @PostConstruct
     public void init(){
-        RepositoryFactory.filialRepository = this.filialRepositoryInject;
-        RepositoryFactory.veiculoRepository = this.veiculoRepositoryInject;
-        RepositoryFactory.motoristaReposotory = this.motoristaReposotoryInject;
-        RepositoryFactory.transporteRepository = this.transporteRepositoryInject;
+        InjectionProvider.filialRepository = this.filialRepositoryInject;
+        InjectionProvider.veiculoRepository = this.veiculoRepositoryInject;
+        InjectionProvider.motoristaReposotory = this.motoristaReposotoryInject;
+        InjectionProvider.transporteRepository = this.transporteRepositoryInject;
+        InjectionProvider.clienteRepository = this.clienteRepositoryInject;
+        InjectionProvider.cteReposotory = this.cteReposotoryInject;
     }
 
 }

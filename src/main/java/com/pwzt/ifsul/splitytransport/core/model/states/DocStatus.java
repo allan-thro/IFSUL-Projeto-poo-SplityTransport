@@ -1,10 +1,12 @@
 package com.pwzt.ifsul.splitytransport.core.model.states;
 
-public interface DocStatus {
-    void emitir();
-    void cancelar();
-    void consultar();
-    void autorizar();
-    void rejeitar();
-    void corrigir();
+import com.pwzt.ifsul.splitytransport.core.model.document.Documento;
+
+public interface DocStatus<T extends Documento> {
+    void emitir(T doc);
+    void cancelar(T doc);
+    void consultar(T doc);
+    void autorizar(T doc);
+    void rejeitar(T doc);
+    void corrigir(T doc);
 }
