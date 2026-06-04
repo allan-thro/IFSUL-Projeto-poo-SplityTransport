@@ -1,11 +1,13 @@
 package com.pwzt.ifsul.splitytransport.core.model.base;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Table(name = "GBL_VEI", indexes = {
     @Index(columnList = "VEI_PLACA")
 })
 @Entity
+@Data
 
 public class Veiculo {
 

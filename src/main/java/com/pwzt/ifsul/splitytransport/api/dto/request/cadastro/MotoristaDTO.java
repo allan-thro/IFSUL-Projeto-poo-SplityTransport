@@ -1,5 +1,6 @@
 package com.pwzt.ifsul.splitytransport.api.dto.request.cadastro;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class MotoristaDTO {
 
     private String cpf;
 
-    private String RNTR;
+    @JsonProperty("rntrc")
+    private String RNTRC;
 
 }

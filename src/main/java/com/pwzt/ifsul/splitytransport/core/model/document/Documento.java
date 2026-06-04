@@ -18,8 +18,8 @@ public class Documento {
     @Column(name = "DOC_STATUS")
     private DocStatus status;
 
-    @Column(name = "DOC_XML64")
-    private String xmlCompactado;
+    @Column(name = "DOC_XML")
+    private String xmlEnvio;
 
     @Column(name = "DOC_CHAVE")
     private String chave;

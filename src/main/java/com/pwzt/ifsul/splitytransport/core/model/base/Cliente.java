@@ -22,8 +22,4 @@ public class Cliente {
     @Column(name = "CLI_RAZAOSOCIAL")
     private String razaoSocial;
 
-    @ManyToOne
-    @JoinColumn(name = "CLI_ENDERECO", referencedColumnName = "END_ID")
-    private Endereco endereco;
-
 }

@@ -1,12 +1,14 @@
 package com.pwzt.ifsul.splitytransport.core.model.base;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import tools.jackson.databind.introspect.BasicClassIntrospector;
 
 @Table(name = "GBL_MOT", indexes = {
         @Index(columnList = "MOT_CPF")
 })
 @Entity
+@Data
 
 public class Motorista {
 
