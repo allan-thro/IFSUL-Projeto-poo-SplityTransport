@@ -3,33 +3,56 @@ package com.pwzt.ifsul.splitytransport.api.service;
 import com.pwzt.ifsul.splitytransport.api.dto.request.cadastro.FilialDTO;
 import com.pwzt.ifsul.splitytransport.api.dto.request.cadastro.MotoristaDTO;
 import com.pwzt.ifsul.splitytransport.api.dto.request.cadastro.VeiculoDTO;
+import com.pwzt.ifsul.splitytransport.api.dto.response.Mensagem;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
-import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseFactory;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cadastro.ResponseCadastroMotoristaAntt;
+import com.pwzt.ifsul.splitytransport.core.exception.ComunicationException;
+import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.api.repository.InjectionProvider;
 import com.pwzt.ifsul.splitytransport.core.model.base.Filial;
 import com.pwzt.ifsul.splitytransport.core.model.base.Motorista;
 import com.pwzt.ifsul.splitytransport.core.model.base.Veiculo;
 import com.pwzt.ifsul.splitytransport.core.utils.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
 
 @Service
 
 public class CadastroService {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private final String ANTT_MOCK_URL = "https://localhost:8085/api/antt/cadastro";
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseApi cadastrarMotorista(MotoristaDTO motoristaDTO){
         Motorista motorista = objectMapper.convertValue(motoristaDTO, Motorista.class);
-        InjectionProvider.getMotoristaReposotory().save(motorista);
+        String urlMock = UriComponentsBuilder.fromPath(ANTT_MOCK_URL)
+                .path("/motorista")
+                .queryParam("cpf", motoristaDTO.getCpf())
+                .queryParam("nome", motorista.getNome())
+                .encode()
+                .toUriString();
 
-        // adicionar comunicação com mock da antt para obter número RNTR,
-        // retornar junto com o cadastro o rntr
+        try{
+            ResponseCadastroMotoristaAntt response = restTemplate.postForObject(urlMock, null, ResponseCadastroMotoristaAntt.class);
 
-        // só salvar cadastro se retorno 200 da antt
-        // usado para validar emissão de ciot, {motorista não cadastrado}
+            if(response.getCodigoStatusAntt().equals("100")){
+                motorista.setRNTRC(response.getRntrc());
+                InjectionProvider.getMotoristaReposotory().save(motorista);
+            }
 
-        return ResponseFactory.cadastroSucesso("200", new Pair<>("100", "Motorista cadastrado com sucesso"));
+            return ResponseFactory.cadastroMotoristaAntt(response);
+        }
+        catch (Exception e) {
+            throw new ComunicationException(e.getMessage());
+        }
     }
 
     public ResponseApi cadastrarVeiculo(VeiculoDTO veiculoDTO){

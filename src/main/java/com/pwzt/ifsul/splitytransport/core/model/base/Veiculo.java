@@ -3,6 +3,8 @@ package com.pwzt.ifsul.splitytransport.core.model.base;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Table(name = "GBL_VEI", indexes = {
     @Index(columnList = "VEI_PLACA")
 })
@@ -26,5 +28,12 @@ public class Veiculo {
 
     @Column(name = "VEI_EIXOS")
     private String eixos;
+
+    @Convert(converter = TipoCarroceriaConverter.class)
+    @Column(name = "VEI_TIPOCARROCERIA")
+    private TipoCarroceria tipoCarroceria;
+
+    @Column(name = "VEI_CAPACIDADEMAXIMA", scale = 15, precision = 2)
+    private BigDecimal capacidadeMaxima;
 
 }

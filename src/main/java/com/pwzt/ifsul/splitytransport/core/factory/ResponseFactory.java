@@ -1,5 +1,8 @@
-package com.pwzt.ifsul.splitytransport.api.dto.response;
+package com.pwzt.ifsul.splitytransport.core.factory;
 
+import com.pwzt.ifsul.splitytransport.api.dto.response.Mensagem;
+import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cadastro.ResponseCadastroMotoristaAntt;
 import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
 import com.pwzt.ifsul.splitytransport.core.utils.Pair;
 
@@ -19,10 +22,10 @@ public class ResponseFactory {
         return new ResponseApi("200", LocalDateTime.now(), mensagemRetorno);
     }
 
-    public static ResponseApi cadastroSucesso(String status, Pair<String, String> p){
+    public static ResponseApi cadastroMotoristaAntt(ResponseCadastroMotoristaAntt response){
         ArrayList<Mensagem> mensagemRetorno = new ArrayList<>();
 
-        Mensagem mensagem = new Mensagem(p.first(), p.second());
+        Mensagem mensagem = new Mensagem(response.getCodigoStatusAntt(), response.getMotivoAntt());
         mensagemRetorno.add(mensagem);
 
         return new ResponseApi("200", LocalDateTime.now(), mensagemRetorno);

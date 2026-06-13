@@ -19,7 +19,4 @@ public class MotoristaDTO {
 
     private String cpf;
 
-    @JsonProperty("rntrc")
-    private String RNTRC;
-
 }
