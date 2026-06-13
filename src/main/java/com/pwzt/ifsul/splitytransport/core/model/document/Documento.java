@@ -1,7 +1,7 @@
 package com.pwzt.ifsul.splitytransport.core.model.document;
 
 import com.pwzt.ifsul.splitytransport.core.model.states.DocStatus;
-import com.pwzt.ifsul.splitytransport.core.model.states.DocStatusConverter;
+import com.pwzt.ifsul.splitytransport.core.model.converter.DocStatusConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ public class Documento {
     @Column(name = "DOC_STATUS")
     private DocStatus status;
 
-    @Column(name = "DOC_XML")
+    @Column(name = "DOC_XML", length = 5000)
     private String xmlEnvio;
 
     @Column(name = "DOC_CHAVE")

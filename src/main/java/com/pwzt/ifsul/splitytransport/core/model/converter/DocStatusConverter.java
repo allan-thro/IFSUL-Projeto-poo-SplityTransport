@@ -1,6 +1,7 @@
-package com.pwzt.ifsul.splitytransport.core.model.states;
+package com.pwzt.ifsul.splitytransport.core.model.converter;
 
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocStatusEnum;
+import com.pwzt.ifsul.splitytransport.core.model.states.*;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

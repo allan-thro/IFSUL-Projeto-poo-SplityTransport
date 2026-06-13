@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Component
 @Data
@@ -23,12 +24,13 @@ public class CTeMapper {
 
         if(cte == null) throw new DocumentoValidationException("Dados de informação do cte nulos");
 
+        _returnValue.setNumeroCte(cte.getInfCTE().getTcIde().getCCT());
         _returnValue.setChaveCte(geradorChaveCTe(cte.getInfCTE()));
         _returnValue.setChave(_returnValue.getChaveCte());
 
         _returnValue.setChaveNfe(cte.getInfCTE().getTcInfCTeNorm().getTcInfDoc().getTcInfNfe().getChave());
         _returnValue.setCodigoOperacao(cte.getInfCTE().getTcIde().getCFOP());
-        _returnValue.setDataHoraEmissao(LocalDateTime.parse(cte.getInfCTE().getTcIde().getDhEmi()));
+        _returnValue.setDataHoraEmissao(parser(cte.getInfCTE().getTcIde().getDhEmi()));
 
         _returnValue.setMunicipioOrigem(cte.getInfCTE().getTcIde().getXMunIni());
         _returnValue.setMunicipioDestino(cte.getInfCTE().getTcIde().getCMunFim());
@@ -36,6 +38,7 @@ public class CTeMapper {
 
         _returnValue.setValorLiquido(new BigDecimal(cte.getInfCTE().getTcVPrest().getVRec()));
         _returnValue.setValorMercadoria(new BigDecimal(cte.getInfCTE().getTcInfCTeNorm().getTcInfCarga().getVCarga()));
+        _returnValue.setPesoCarga(new BigDecimal(cte.getInfCTE().getTcInfCTeNorm().getTcInfCarga().getTcInfQ().getQCarga()));
 
         _returnValue.setDestinatario(createDestinatario(cte.getInfCTE().getTcDest()));
         _returnValue.setEmitente(createEmitente(cte.getInfCTE().getTcEmit()));
@@ -85,17 +88,22 @@ public class CTeMapper {
     private static String geradorChaveCTe(TcInfCTE infCte){
         String chave = "";
 
-        chave.concat(infCte.getTcIde().getCUf());
-        chave.concat(infCte.getTcIde().getDhEmi().substring(2, 3));
-        chave.concat(infCte.getTcIde().getDhEmi().substring(5, 6));
-        chave.concat(infCte.getTcEmit().getCNPJ());
-        chave.concat(infCte.getTcIde().getMod());
-        chave.concat(infCte.getTcIde().getSerie());
-        chave.concat(infCte.getTcIde().getCCT());
-        chave.concat(infCte.getTcInfCTeNorm().getTcInfDoc().getTcInfNfe().getChave().substring(0, 8));
-        chave.concat("7");
+        chave = chave.concat(infCte.getTcIde().getCMunEnv().substring(0, 2));
+        chave = chave.concat(infCte.getTcIde().getDhEmi().substring(2, 4));
+        chave = chave.concat(infCte.getTcIde().getDhEmi().substring(5, 7));
+        chave = chave.concat(infCte.getTcEmit().getCNPJ());
+        chave = chave.concat(infCte.getTcIde().getMod());
+        chave = chave.concat(infCte.getTcIde().getSerie());
+        chave = chave.concat(infCte.getTcIde().getCCT());
+        chave = chave.concat(infCte.getTcInfCTeNorm().getTcInfDoc().getTcInfNfe().getChave().substring(0, 9));
+        chave = chave.concat("7");
 
         return chave;
+    }
+
+    private static LocalDateTime parser(String data){
+        OffsetDateTime odt = OffsetDateTime.parse(data);
+        return odt.toLocalDateTime();
     }
 
 }

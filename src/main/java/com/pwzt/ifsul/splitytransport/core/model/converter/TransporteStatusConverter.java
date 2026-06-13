@@ -1,10 +1,10 @@
-package com.pwzt.ifsul.splitytransport.core.model.states;
+package com.pwzt.ifsul.splitytransport.core.model.converter;
 
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.TransporteStatusEnum;
+import com.pwzt.ifsul.splitytransport.core.model.states.TransporteStatus;
+import com.pwzt.ifsul.splitytransport.core.model.states.TsRascunho;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
-import javax.print.attribute.Attribute;
 
 @Converter
 public class TransporteStatusConverter implements AttributeConverter<TransporteStatus, String> {

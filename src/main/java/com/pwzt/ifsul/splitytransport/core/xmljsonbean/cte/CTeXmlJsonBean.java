@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
+@Component
 @Data
-
 public class CTeXmlJsonBean implements XmlJsonBean<TcCTE, CTe> {
 
     @Override

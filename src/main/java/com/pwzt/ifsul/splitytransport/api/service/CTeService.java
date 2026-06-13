@@ -1,7 +1,7 @@
 package com.pwzt.ifsul.splitytransport.api.service;
 
 import com.pwzt.ifsul.splitytransport.api.dto.base.CTeRabbitMessage;
-import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseFactory;
+import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTe;
 import com.pwzt.ifsul.splitytransport.api.repository.InjectionProvider;
 import com.pwzt.ifsul.splitytransport.core.complextype.cte.TcCTE;
@@ -11,15 +11,16 @@ import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.TipoDocumento;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBean;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBeanResolver;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
+
+    @Value("${rabbit.cte.queue}")
+    private String CTE_QUEUE_NAME;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -30,11 +31,10 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
     @Override
     public ResponseCTe emitir(TcCTE tcCte, Long transportId) {
 
-        Optional<Transporte> transporteOpt = InjectionProvider.getTransporteRepository().findById(transportId);
+        Transporte transporte = InjectionProvider.getTransporteRepository().findById(transportId)
+                .orElseThrow(() -> new DocumentoValidationException("Código do transporte não cadastrado para vinculo CTe"));
 
-        if(transporteOpt.isEmpty()) throw new DocumentoValidationException("Código do transporte não cadastrado para vinculo CTe");
-
-        CTe cteBd = transporteOpt.get().getCte();
+        CTe cteBd = transporte.getCte();
         cteBd.getStatus().emitir(cteBd);
 
         XmlJsonBean<TcCTE, CTe> xmlJsonBean = xmlJsonBeanResolver.resolve(TipoDocumento.CTE);
@@ -45,6 +45,8 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
         InjectionProvider.getCteReposotory().save(cteBd);
         CTeRabbitMessage mensagem = new CTeRabbitMessage(xmlEnvio, cteBd.getChave(), transportId);
+
+        rabbitTemplate.convertAndSend(CTE_QUEUE_NAME, mensagem);
 
         return ResponseFactory.emissaoCTeSucesso(cteBd.getChaveCte());
 
@@ -61,7 +63,7 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
     public ResponseCTe consultar(String chave) {
         // consultar ciot -> mock, consultar situação fila rabit -> direta
 
-        throw new NotImplementedException();
+        return null;
     }
 
     @Override
@@ -70,6 +72,7 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
         // receber json, cadastrar log de evento, mandar para rabbit {chave, motivo}
         // Rabbit: enviar para moc antt, processar resposta, atualizar dados no banco (cte Cancelado ou log de Evento {acessado pelo listener do cliente para retorno})
 
-        throw new NotImplementedException();
+
+        return null;
     }
 }

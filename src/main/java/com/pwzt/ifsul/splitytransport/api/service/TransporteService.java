@@ -1,7 +1,7 @@
 package com.pwzt.ifsul.splitytransport.api.service;
 
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
-import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseFactory;
+import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.api.repository.InjectionProvider;
 import com.pwzt.ifsul.splitytransport.core.exception.TransporteValidationException;
 import com.pwzt.ifsul.splitytransport.core.model.base.Motorista;

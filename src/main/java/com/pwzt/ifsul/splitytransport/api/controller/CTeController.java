@@ -16,7 +16,7 @@ public class CTeController {
 
     private final CTeService cteService;
 
-    @PostMapping("/emtir/{id}")
+    @PostMapping("/emitir/{id}")
     public ResponseEntity<ResponseCTeEmissao> emitirCTe(@RequestBody TcCTE cte, @PathVariable("id") Long transportId){
         ResponseCTeEmissao response = (ResponseCTeEmissao) cteService.emitir(cte, transportId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
