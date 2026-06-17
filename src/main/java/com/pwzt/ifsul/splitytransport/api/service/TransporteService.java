@@ -28,7 +28,7 @@ public class TransporteService {
         Transporte transporte = new Transporte(motoristaOpt.get(), veiculoOpt.get());
         InjectionProvider.getTransporteRepository().save(transporte);
 
-        return ResponseFactory.cadastroSucesso("200", new Pair<>("100", "Transporte cadastrado com sucesso"));
+        return ResponseFactory.cadastroSucesso("200", "Transporte cadastrado com sucesso");
     }
 
 }

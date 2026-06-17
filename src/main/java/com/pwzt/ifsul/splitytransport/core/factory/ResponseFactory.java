@@ -1,34 +1,50 @@
 package com.pwzt.ifsul.splitytransport.core.factory;
 
-import com.pwzt.ifsul.splitytransport.api.dto.response.Mensagem;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
-import com.pwzt.ifsul.splitytransport.api.dto.response.cadastro.ResponseCadastroMotoristaAntt;
-import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
-import com.pwzt.ifsul.splitytransport.core.utils.Pair;
+import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cadastro.ResponseCadastroBaseAntt;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class ResponseFactory {
 
-    public static ResponseApi cadastroSucesso(String status, ArrayList<Pair<String, String>> mensagemList){
-        ArrayList<Mensagem> mensagemRetorno = new ArrayList<>();
+    public static ResponseApi createResponseCadastroAntt(ResponseCadastroBaseAntt responseMock, String http){
+        ResponseApi response = new ResponseApi();
 
-        for(Pair<String, String> p : mensagemList){
-            Mensagem mensagem = new Mensagem(p.first(), p.second());
-            mensagemRetorno.add(mensagem);
-        }
+        ResponseMensagem mensagem = new ResponseMensagem.Builder()
+                .descricao(responseMock.getMotivoAntt())
+                .codigo(response.getStatus())
+                .tipoResolver(response.getStatus())
+                .build();
 
-        return new ResponseApi("200", LocalDateTime.now(), mensagemRetorno);
+        response.setStatus(http);
+        response.setTimestamp(LocalDateTime.now());
+        response.addMensagem(mensagem);
+
+        return response;
     }
 
-    public static ResponseApi cadastroMotoristaAntt(ResponseCadastroMotoristaAntt response){
+    public static ResponseApi cadastroSucesso(String status, String motivo){
+        ResponseApi response = new ResponseApi();
+
+        response.setTimestamp(LocalDateTime.now());
+        response.setMotivo(motivo);
+        response.setStatus(status);
+
+        return response;
+    }
+
+    /*public static ResponseApi createCadastroMotoristaAntt(ResponseCadastroMotoristaAntt response){
         ArrayList<Mensagem> mensagemRetorno = new ArrayList<>();
 
-        Mensagem mensagem = new Mensagem(response.getCodigoStatusAntt(), response.getMotivoAntt());
-        mensagemRetorno.add(mensagem);
+        Mensagem mensagemMock = new Mensagem(response.getCodigoStatusAntt(), response.getMotivoAntt());
+        mensagemRetorno.add(mensagemMock);
 
-        return new ResponseApi("200", LocalDateTime.now(), mensagemRetorno);
+        return new ResponseApi("200", null, LocalDateTime.now(), mensagemRetorno);
+    }
+
+    public static ResponseApi createCadastroVeiculoAntt(ResponseCadastroVeiculoAntt response){
+        ArrayList<Mensagem>
     }
 
     public static ResponseCTeEmissao emissaoCTeSucesso(String chaveCte){
@@ -44,6 +60,6 @@ public class ResponseFactory {
         responseEmissao.setStatus("200");
 
         return responseEmissao;
-    }
+    }*/
 
 }

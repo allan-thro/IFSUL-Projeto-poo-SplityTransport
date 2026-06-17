@@ -14,9 +14,12 @@ import java.util.ArrayList;
 public class ResponseApi {
 
     private String status;
-
+    private String motivo;
     private LocalDateTime timestamp;
+    private ArrayList<ResponseMensagem> mensagemList;
 
-    private ArrayList<Mensagem> mensagemList;
+    public void addMensagem(ResponseMensagem mensagem){
+        this.mensagemList.add(mensagem);
+    }
 
 }

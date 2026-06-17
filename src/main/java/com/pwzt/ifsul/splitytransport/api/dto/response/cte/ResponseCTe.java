@@ -1,7 +1,6 @@
 package com.pwzt.ifsul.splitytransport.api.dto.response.cte;
 
-import com.pwzt.ifsul.splitytransport.api.dto.response.Mensagem;
-import com.pwzt.ifsul.splitytransport.core.model.states.DocStatus;
+import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,6 +11,6 @@ public class ResponseCTe {
 
     private String status;
 
-    private ArrayList<Mensagem> mensagemList;
+    private ArrayList<ResponseMensagem> mensagemList;
 
 }
