@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Table(name = "GBL_VEI", indexes = {
     @Index(columnList = "VEI_PLACA")
@@ -29,9 +30,8 @@ public class Veiculo {
     @Column(name = "VEI_EIXOS")
     private String eixos;
 
-    @Convert(converter = TipoCarroceriaConverter.class)
-    @Column(name = "VEI_TIPOCARROCERIA")
-    private TipoCarroceria tipoCarroceria;
+    @Column(name = "VEI_RNTRC")
+    private String rntrc;
 
     @Column(name = "VEI_CAPACIDADEMAXIMA", scale = 15, precision = 2)
     private BigDecimal capacidadeMaxima;

@@ -18,7 +18,7 @@ public class TransporteService {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    public ResponseApi cadastrarTransporte(String cpf, String placa){
+    public ResponseApi gerarTransporte(String cpf, String placa){
         Optional<Motorista> motoristaOpt = Optional.ofNullable(InjectionProvider.getMotoristaReposotory().findByCpf(cpf));
         Optional<Veiculo> veiculoOpt = Optional.ofNullable(InjectionProvider.getVeiculoRepository().findByPlaca(placa));
 

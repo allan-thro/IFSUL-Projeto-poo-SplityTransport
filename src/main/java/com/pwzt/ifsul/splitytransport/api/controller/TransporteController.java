@@ -18,14 +18,20 @@ public class TransporteController {
 
     private TransporteService transporteService;
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/gerar")
     public ResponseEntity<ResponseApi> cadastrarTransporte(
             @RequestParam("cpf_motorista") String cpfMotorista,
             @RequestParam String placa
     ){
-        ResponseApi resposta = transporteService.cadastrarTransporte(cpfMotorista, placa);
+        ResponseApi resposta = transporteService.gerarTransporte(cpfMotorista, placa);
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
+    @PostMapping("/autorizar")
+    public ResponseEntity<ResponseApi> iniciarTransporte(
+            @RequestParam Long id
+    ){
+        return null;
+    }
 
 }

@@ -50,9 +50,9 @@ public class Transporte {
     @JoinColumn(name = "TRA_CTE", referencedColumnName = "DOC_ID")
     private CTe cte;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    /*@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "TRA_CIOT", referencedColumnName = "DOC_ID")
-    private CIOT ciot;
+    private CIOT ciot;*/
 
     public Transporte(Motorista motorista, Veiculo veiculo){
         this.transporteStatus = new TsRascunho();
@@ -60,7 +60,7 @@ public class Transporte {
         this.veiculo = veiculo;
         this.dataHoraEmissao = LocalDateTime.now();
         this.cte = DocumentoFactory.createDocRascunho(CTe.class);
-        this.ciot = DocumentoFactory.createDocRascunho(CIOT.class);
+        //this.ciot = DocumentoFactory.createDocRascunho(CIOT.class);
     }
 
 }

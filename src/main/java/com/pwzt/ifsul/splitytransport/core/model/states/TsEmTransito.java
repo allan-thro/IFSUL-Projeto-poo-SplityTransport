@@ -2,7 +2,7 @@ package com.pwzt.ifsul.splitytransport.core.model.states;
 
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 
-public class TsRascunho implements TransporteStatus{
+public class TsEmTransito implements TransporteStatus{
 
     @Override
     public ResponseMensagem autorizar() {
