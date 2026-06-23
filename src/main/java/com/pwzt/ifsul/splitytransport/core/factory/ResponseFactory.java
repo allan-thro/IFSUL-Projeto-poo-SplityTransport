@@ -3,6 +3,7 @@ package com.pwzt.ifsul.splitytransport.core.factory;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseApi;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 import com.pwzt.ifsul.splitytransport.api.dto.response.cadastro.ResponseCadastroBaseAntt;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
 
 import java.time.LocalDateTime;
 
@@ -45,21 +46,22 @@ public class ResponseFactory {
 
     public static ResponseApi createCadastroVeiculoAntt(ResponseCadastroVeiculoAntt response){
         ArrayList<Mensagem>
-    }
+    }*/
 
     public static ResponseCTeEmissao emissaoCTeSucesso(String chaveCte){
         ResponseCTeEmissao responseEmissao = new ResponseCTeEmissao();
-        ArrayList<Mensagem> mensagemRetorno = new ArrayList<>();
 
-        Mensagem mensagem = new Mensagem("105", "CTe enviada para a fila de emissão, consulte pela chave para obter detalhes do processamento");
+
+
+        /*Mensagem mensagem = new Mensagem("105", "CTe enviada para a fila de emissão, consulte pela chave para obter detalhes do processamento");
         mensagemRetorno.add(mensagem);
 
         responseEmissao.setDataEmissao(LocalDateTime.now());
         responseEmissao.setMensagemList(mensagemRetorno);
         responseEmissao.setChaveCte(chaveCte);
-        responseEmissao.setStatus("200");
+        responseEmissao.setStatus("200");*/
 
         return responseEmissao;
-    }*/
+    }
 
 }

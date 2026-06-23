@@ -1,7 +1,18 @@
 package com.pwzt.ifsul.splitytransport.core.exception;
 
+import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
+
+import java.util.List;
+
 public class DocumentoValidationException extends RuntimeException {
-    public DocumentoValidationException(String message) {
-        super(message);
+    private ResponseMensagem erro;
+
+    public DocumentoValidationException(String mensagem, ResponseMensagem erro) {
+        super(mensagem);
+        this.erro = erro;
+    }
+
+    public DocumentoValidationException(String mensagem){
+        super(mensagem);
     }
 }

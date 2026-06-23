@@ -33,6 +33,11 @@ public class ResponseMensagem {
             return this;
         }
 
+        public Builder sucesso(){
+            this.tipo = "SUCESSO";
+            return this;
+        }
+
         public Builder tipoResolver(String status){
             if(List.of("200", "100", "101").contains(status)){
                 this.tipo = "SUCESSO";
@@ -50,6 +55,14 @@ public class ResponseMensagem {
         public ResponseMensagem build() {
             return new ResponseMensagem(this);
         }
+    }
+
+    public boolean isSucesso(){
+        return tipo.equals("SUCESSO");
+    }
+
+    public boolean isErro(){
+        return tipo.equals("ERRO");
     }
 
 }

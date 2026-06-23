@@ -25,8 +25,8 @@ public class CTeMapper {
         if(cte == null) throw new DocumentoValidationException("Dados de informação do cte nulos");
 
         _returnValue.setNumeroCte(cte.getInfCTE().getTcIde().getCCT());
-        _returnValue.setChaveCte(geradorChaveCTe(cte.getInfCTE()));
-        _returnValue.setChave(_returnValue.getChaveCte());
+        _returnValue.setChaveCte(geradorChaveCTe(cte.getInfCTE())); //
+        _returnValue.setChave(_returnValue.getChaveCte()); //
 
         _returnValue.setChaveNfe(cte.getInfCTE().getTcInfCTeNorm().getTcInfDoc().getTcInfNfe().getChave());
         _returnValue.setCodigoOperacao(cte.getInfCTE().getTcIde().getCFOP());

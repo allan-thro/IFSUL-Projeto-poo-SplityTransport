@@ -21,6 +21,9 @@ public class CTe extends Documento{
     @Column(name = "CTE_NUMCTE")
     private String numeroCte;
 
+    @Column(name = "CTE_PROTOCOLO")
+    private String protocolo;
+
     @Column(name = "CTE_DHEMISSAO")
     private LocalDateTime dataHoraEmissao;
 

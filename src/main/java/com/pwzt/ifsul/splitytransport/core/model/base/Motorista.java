@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import tools.jackson.databind.introspect.BasicClassIntrospector;
 
+import java.time.LocalDate;
+
 @Table(name = "GBL_MOT", indexes = {
         @Index(columnList = "MOT_CPF")
 })
@@ -30,5 +32,11 @@ public class Motorista {
 
     @Column(name = "MOT_RNTRC")
     private String RNTRC;
+
+    @Column(name = "MOT_VALIDADECNH")
+    private LocalDate validadeCnh;
+
+    @Column(name = "MOT_VALIDADERNTRC")
+    private LocalDate validadeRntrc;
 
 }

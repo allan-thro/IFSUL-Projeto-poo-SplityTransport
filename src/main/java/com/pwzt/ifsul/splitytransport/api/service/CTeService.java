@@ -1,6 +1,9 @@
 package com.pwzt.ifsul.splitytransport.api.service;
 
 import com.pwzt.ifsul.splitytransport.api.dto.base.CTeRabbitMessage;
+import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
+import com.pwzt.ifsul.splitytransport.core.exception.ComunicationException;
 import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTe;
 import com.pwzt.ifsul.splitytransport.api.repository.InjectionProvider;
@@ -11,19 +14,25 @@ import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.TipoDocumento;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBean;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBeanResolver;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
-    @Value("${rabbit.cte.queue}")
-    private String CTE_QUEUE_NAME;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private RestClient restClient = RestClient.builder().baseUrl("https://localhost:8085/api").build();
 
     @Autowired
     private XmlJsonBeanResolver xmlJsonBeanResolver;
@@ -40,30 +49,57 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
         XmlJsonBean<TcCTE, CTe> xmlJsonBean = xmlJsonBeanResolver.resolve(TipoDocumento.CTE);
         xmlJsonBean.updateDocumentAndTc(tcCte, cteBd);
 
-        String xmlEnvio = xmlJsonBean.tcToXmlConverter(tcCte);
-        cteBd.setXmlEnvio(xmlEnvio);
+        try{
+            String xmlEnvio = xmlJsonBean.tcToXmlConverter(tcCte);
 
-        InjectionProvider.getCteReposotory().save(cteBd);
-        CTeRabbitMessage mensagem = new CTeRabbitMessage(xmlEnvio, cteBd.getChave(), transportId);
+            ResponseCTeEmissao response = restClient.post()
+                    .uri("/sefaz/cte/emitir")
+                    .contentType(MediaType.APPLICATION_XML)
+                    .body(xmlEnvio)
+                    .retrieve()
+                    .body(ResponseCTeEmissao.class);
 
-        rabbitTemplate.convertAndSend(CTE_QUEUE_NAME, mensagem);
+            if(!response.getCodigo().equals("200")){
+                ResponseMensagem erro = new ResponseMensagem.Builder()
+                        .descricao(response.getMotivo())
+                        .codigo(response.getCodigo())
+                        .erro()
+                        .build();
 
-        return ResponseFactory.emissaoCTeSucesso(cteBd.getChaveCte());
+                throw new DocumentoValidationException("CTe não autorizado pela sefaz", erro);
+            }
 
-        // service: chamar state para atualizar cte do transporte -> parser tcToCte, atualizar banco e status para pendente
-        // service: gerar xml e mandar mensagem para rabbit {xml, chave, transportId}
+            cteBd.setChaveCte(response.getChaveCte());
+            cteBd.setProtocolo(response.getProtocolo());
+            cteBd.setXmlEnvio(xmlEnvio);
 
-        // Rabbit: enviar para mock antt, processar resposta, atualizar dados no banco,  {setar status cte para aprovado/rejeitado}
+            InjectionProvider.getCteReposotory().save(cteBd);
 
-        // service: retorna chave cte para consultar situação fila
+            return ResponseFactory.emissaoCTeSucesso(cteBd.getChaveCte());
 
+        }catch (HttpStatusCodeException e){
+            ResponseMensagem erro = new ResponseMensagem.Builder()
+                    .descricao("Comunicação com a sefaz retornou erro")
+                    .codigo(e.getStatusCode().toString())
+                    .erro()
+                    .build();
+
+            throw new ComunicationException(erro);
+        }catch (RestClientException e){
+            ResponseMensagem erro = new ResponseMensagem.Builder()
+                    .descricao("Não foi possivel conectar com a sefaz")
+                    .codigo("400")
+                    .erro()
+                    .build();
+
+            throw new ComunicationException(erro);
+        }
     }
 
     @Override
     public ResponseCTe consultar(String chave) {
         // consultar ciot -> mock, consultar situação fila rabit -> direta
-
-        return null;
+        throw new NotImplementedException("Não implementado");
     }
 
     @Override
@@ -75,4 +111,5 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
         return null;
     }
+
 }

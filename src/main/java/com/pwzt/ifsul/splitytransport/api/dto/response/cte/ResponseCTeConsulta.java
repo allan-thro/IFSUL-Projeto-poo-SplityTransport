@@ -12,7 +12,4 @@ public class ResponseCTeConsulta extends ResponseCTe{
     @JsonProperty("protocolo_autorizacao")
     private String protocoloAutorizacao;
 
-    @JsonProperty("historico_eventos")
-    private ArrayList<CTeEvento> historicoEventos;
-
 }
