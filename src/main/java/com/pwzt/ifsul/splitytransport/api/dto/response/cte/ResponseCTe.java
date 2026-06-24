@@ -11,6 +11,6 @@ public class ResponseCTe {
 
     private String status;
 
-    private ArrayList<ResponseMensagem> mensagemList;
+    private ResponseMensagem mensagem;
 
 }

@@ -3,11 +3,13 @@ package com.pwzt.ifsul.splitytransport.core.validation.transporte;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
 import com.pwzt.ifsul.splitytransport.core.validation.ValidationResult;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ValidadeValidatorHandler extends TransporteValidationHandler{
 
     @Override

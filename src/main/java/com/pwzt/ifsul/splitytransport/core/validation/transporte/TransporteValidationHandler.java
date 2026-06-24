@@ -4,6 +4,7 @@ import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
 import com.pwzt.ifsul.splitytransport.core.validation.ValidationResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TransporteValidationHandler {
@@ -15,17 +16,17 @@ public abstract class TransporteValidationHandler {
         return proximo;
     }
 
-    public final void handle(Transporte transporte, List<ResponseMensagem> mensagensErro){
+    public final void handle(Transporte transporte, List<ResponseMensagem> erroList){
         ValidationResult result = validar(transporte);
 
         if(!result.isValido()){
             for(ResponseMensagem message : result.getErroList()){
-                mensagensErro.add(message);
+                erroList.add(message);
             }
         }
 
         if(proximo != null){
-            proximo.handle(transporte, mensagensErro);
+            proximo.handle(transporte, erroList);
         }
     }
 

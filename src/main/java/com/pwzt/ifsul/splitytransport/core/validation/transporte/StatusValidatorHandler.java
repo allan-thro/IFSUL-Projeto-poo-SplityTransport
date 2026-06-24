@@ -4,10 +4,12 @@ import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
 import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
 import com.pwzt.ifsul.splitytransport.core.model.states.DsAutorizado;
 import com.pwzt.ifsul.splitytransport.core.validation.ValidationResult;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class StatusValidatorHandler extends TransporteValidationHandler{
 
     @Override
@@ -23,8 +25,15 @@ public class StatusValidatorHandler extends TransporteValidationHandler{
             );
         }
 
-        ResponseMensagem responseTs = transporte.getTransporteStatus().autorizar();
-        if(responseTs.isErro()) erros.add(responseTs);
+        if(!transporte.getTransporteStatus().podeAutorizar()){
+            erros.add(new ResponseMensagem.Builder()
+                    .codigo("105")
+                    .descricao(String.format("Transição de estado invalida, %s não pode ser iniciado",
+                            transporte.getTransporteStatus().estadoAtual().getDescricao()))
+                    .erro()
+                    .build()
+            );
+        }
 
         return new ValidationResult(erros);
     }

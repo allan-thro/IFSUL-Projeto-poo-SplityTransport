@@ -25,7 +25,7 @@ public class ResponseFactory {
         return response;
     }
 
-    public static ResponseApi cadastroSucesso(String status, String motivo){
+    public static ResponseApi createResponseSucesso(String status, String motivo){
         ResponseApi response = new ResponseApi();
 
         response.setTimestamp(LocalDateTime.now());
@@ -35,33 +35,21 @@ public class ResponseFactory {
         return response;
     }
 
-    /*public static ResponseApi createCadastroMotoristaAntt(ResponseCadastroMotoristaAntt response){
-        ArrayList<Mensagem> mensagemRetorno = new ArrayList<>();
-
-        Mensagem mensagemMock = new Mensagem(response.getCodigoStatusAntt(), response.getMotivoAntt());
-        mensagemRetorno.add(mensagemMock);
-
-        return new ResponseApi("200", null, LocalDateTime.now(), mensagemRetorno);
-    }
-
-    public static ResponseApi createCadastroVeiculoAntt(ResponseCadastroVeiculoAntt response){
-        ArrayList<Mensagem>
-    }*/
-
     public static ResponseCTeEmissao emissaoCTeSucesso(String chaveCte){
-        ResponseCTeEmissao responseEmissao = new ResponseCTeEmissao();
+        ResponseCTeEmissao response = new ResponseCTeEmissao();
 
+        ResponseMensagem mensagem = new ResponseMensagem.Builder()
+                .descricao("CTe emitido com sucesso")
+                .codigo("205")
+                .sucesso()
+                .build();
 
+        response.setDataAutorizacao(LocalDateTime.now());
+        response.setMensagem(mensagem);
+        response.setChaveCte(chaveCte);
+        response.setStatus("200");
 
-        /*Mensagem mensagem = new Mensagem("105", "CTe enviada para a fila de emissão, consulte pela chave para obter detalhes do processamento");
-        mensagemRetorno.add(mensagem);
-
-        responseEmissao.setDataEmissao(LocalDateTime.now());
-        responseEmissao.setMensagemList(mensagemRetorno);
-        responseEmissao.setChaveCte(chaveCte);
-        responseEmissao.setStatus("200");*/
-
-        return responseEmissao;
+        return response;
     }
 
 }

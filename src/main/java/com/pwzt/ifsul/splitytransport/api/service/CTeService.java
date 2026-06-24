@@ -1,33 +1,25 @@
 package com.pwzt.ifsul.splitytransport.api.service;
 
-import com.pwzt.ifsul.splitytransport.api.dto.base.CTeRabbitMessage;
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
-import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
-import com.pwzt.ifsul.splitytransport.core.exception.ComunicationException;
-import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTe;
+import com.pwzt.ifsul.splitytransport.api.dto.response.cte.ResponseCTeEmissao;
 import com.pwzt.ifsul.splitytransport.api.repository.InjectionProvider;
 import com.pwzt.ifsul.splitytransport.core.complextype.cte.TcCTE;
+import com.pwzt.ifsul.splitytransport.core.exception.ComunicationException;
 import com.pwzt.ifsul.splitytransport.core.exception.DocumentoValidationException;
+import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
 import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.TipoDocumento;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBean;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBeanResolver;
 import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
@@ -69,11 +61,15 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
                 throw new DocumentoValidationException("CTe não autorizado pela sefaz", erro);
             }
 
+
             cteBd.setChaveCte(response.getChaveCte());
             cteBd.setProtocolo(response.getProtocolo());
             cteBd.setXmlEnvio(xmlEnvio);
 
+            transporte.setCte(cteBd);
+
             InjectionProvider.getCteReposotory().save(cteBd);
+            InjectionProvider.getTransporteRepository().save(transporte);
 
             return ResponseFactory.emissaoCTeSucesso(cteBd.getChaveCte());
 
@@ -104,12 +100,9 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
     @Override
     public ResponseCTe cancelar(String chave, String motivo) {
-
         // receber json, cadastrar log de evento, mandar para rabbit {chave, motivo}
         // Rabbit: enviar para moc antt, processar resposta, atualizar dados no banco (cte Cancelado ou log de Evento {acessado pelo listener do cliente para retorno})
-
-
-        return null;
+        throw new NotImplementedException("Não implementado");
     }
 
 }

@@ -7,13 +7,14 @@ import lombok.Getter;
 @Getter
 
 public enum TransporteStatusEnum {
-    RASCUNHO("Rascunho");
+    RASCUNHO(1, "Rascunho");
 
-    private final String codigo;
+    private final Integer codigo;
+    private final String descricao;
 
-    public static TransporteStatusEnum fromCodigo(String cod){
+    public static TransporteStatusEnum fromCodigo(String descricao){
         for(TransporteStatusEnum statusEnum : TransporteStatusEnum.values()){
-            if(statusEnum.getCodigo().equalsIgnoreCase(cod)) return statusEnum;
+            if(statusEnum.getDescricao().equalsIgnoreCase(descricao)) return statusEnum;
         }
         throw new IllegalArgumentException("Enumerator Status inválido");
     }
