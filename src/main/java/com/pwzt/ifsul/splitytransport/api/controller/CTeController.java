@@ -21,6 +21,5 @@ public class CTeController {
         ResponseCTeEmissao response = (ResponseCTeEmissao) cteService.emitir(cte, transportId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    
 
 }

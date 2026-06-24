@@ -10,6 +10,7 @@ import com.pwzt.ifsul.splitytransport.core.exception.DocumentoValidationExceptio
 import com.pwzt.ifsul.splitytransport.core.factory.ResponseFactory;
 import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
 import com.pwzt.ifsul.splitytransport.core.model.document.CTe;
+import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocStatusEnum;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.TipoDocumento;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBean;
 import com.pwzt.ifsul.splitytransport.core.xmljsonbean.XmlJsonBeanResolver;
@@ -36,7 +37,8 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
                 .orElseThrow(() -> new DocumentoValidationException("Código do transporte não cadastrado para vinculo CTe"));
 
         CTe cteBd = transporte.getCte();
-        cteBd.getStatus().emitir(cteBd);
+
+        if(!(cteBd.getStatus() == DocStatusEnum.RASCUNHO)) throw new DocumentoValidationException(String.format("Transição de estados inválido, %s não pode ser emitido", cteBd.getStatus().getDescricao()));
 
         XmlJsonBean<TcCTE, CTe> xmlJsonBean = xmlJsonBeanResolver.resolve(TipoDocumento.CTE);
         xmlJsonBean.updateDocumentAndTc(tcCte, cteBd);
@@ -60,7 +62,6 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
                 throw new DocumentoValidationException("CTe não autorizado pela sefaz", erro);
             }
-
 
             cteBd.setChaveCte(response.getChaveCte());
             cteBd.setProtocolo(response.getProtocolo());
