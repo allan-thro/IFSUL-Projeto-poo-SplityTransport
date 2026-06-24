@@ -1,7 +1,8 @@
 package com.pwzt.ifsul.splitytransport.core.model.document;
 
-import com.pwzt.ifsul.splitytransport.core.model.states.DocStatus;
 import com.pwzt.ifsul.splitytransport.core.model.converter.DocStatusConverter;
+import com.pwzt.ifsul.splitytransport.core.model.converter.DocStatusConverterEnum;
+import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,9 +15,9 @@ public class Documento {
     @Column(name = "DOC_ID")
     private Long id;
 
-    @Convert(converter = DocStatusConverter.class)
+    @Convert(converter = DocStatusConverterEnum.class)
     @Column(name = "DOC_STATUS")
-    private DocStatus status;
+    private DocStatusEnum status;
 
     @Column(name = "DOC_XML", length = 5000)
     private String xmlEnvio;

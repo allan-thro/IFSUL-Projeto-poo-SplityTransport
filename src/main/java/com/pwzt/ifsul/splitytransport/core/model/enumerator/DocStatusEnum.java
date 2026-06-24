@@ -7,18 +7,19 @@ import lombok.Getter;
 @Getter
 
 public enum DocStatusEnum {
-    AUTORIZADO("Autorizado"),
-    CANCELADO("Cancelado"),
-    DENEGADO("Denegado"),
-    PENDENTE("Pendente"),
-    RASCUNHO("Rascunho"),
-    REJEITADO("Rejeitado");
+    AUTORIZADO(1, "Autorizado"),
+    CANCELADO(2, "Cancelado"),
+    DENEGADO(3, "Denegado"),
+    PENDENTE(4, "Pendente"),
+    RASCUNHO(5, "Rascunho"),
+    REJEITADO(6, "Rejeitado");
 
-    private final String codigo;
+    private final Integer codigo;
+    private final String descricao;
 
-    public static DocStatusEnum fromCodigo(String cod){
+    public static DocStatusEnum fromDescricao(String descricao){
         for(DocStatusEnum statusEnum : DocStatusEnum.values()){
-            if(statusEnum.getCodigo().equalsIgnoreCase(cod)) return statusEnum;
+            if(statusEnum.getDescricao().equalsIgnoreCase(descricao)) return statusEnum;
         }
         throw new IllegalArgumentException("Enumerator Status inválido");
     }

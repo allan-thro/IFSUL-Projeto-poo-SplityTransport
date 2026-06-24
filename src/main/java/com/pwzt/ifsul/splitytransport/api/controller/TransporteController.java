@@ -28,10 +28,21 @@ public class TransporteController {
     }
 
     @PostMapping("/autorizar")
-    public ResponseEntity<ResponseApi> iniciarTransporte(
-            @RequestParam Long id
-    ){
-        return null;
+    public ResponseEntity<ResponseApi> autorizarTransporte(@RequestParam Long id){
+        ResponseApi resposta = transporteService.autorizarTransporte(id);
+        return ResponseEntity.status(HttpStatus.OK).body(resposta);
+    }
+
+    @PostMapping("/inciar")
+    public ResponseEntity<ResponseApi> iniciarTransporte(@RequestParam Long id){
+        ResponseApi resposta = transporteService.iniciarTranporte(id);
+        return ResponseEntity.status(HttpStatus.OK).body(resposta);
+    }
+
+    @PostMapping("/concluir")
+    public ResponseEntity<ResponseApi> concluirTransporte(@RequestParam Long id){
+        ResponseApi resposta = transporteService.concluirTransporte(id);
+        return ResponseEntity.status(HttpStatus.OK).body(resposta);
     }
 
 }
