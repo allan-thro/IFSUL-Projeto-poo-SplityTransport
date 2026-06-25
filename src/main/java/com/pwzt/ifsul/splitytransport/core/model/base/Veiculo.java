@@ -1,7 +1,9 @@
 package com.pwzt.ifsul.splitytransport.core.model.base;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Data
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class Veiculo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +37,7 @@ public class Veiculo {
     @Column(name = "VEI_RNTRC")
     private String rntrc;
 
-    @Column(name = "VEI_CAPACIDADEMAXIMA", scale = 15, precision = 2)
+    @Column(name = "VEI_CAPACIDADEMAXIMA", precision = 8, scale = 2)
     private BigDecimal capacidadeMaxima;
 
 }

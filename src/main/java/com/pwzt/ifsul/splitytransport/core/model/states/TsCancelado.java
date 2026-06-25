@@ -1,44 +1,53 @@
 package com.pwzt.ifsul.splitytransport.core.model.states;
 
 import com.pwzt.ifsul.splitytransport.api.dto.response.ResponseMensagem;
+import com.pwzt.ifsul.splitytransport.core.exception.DocumentoValidationException;
+import com.pwzt.ifsul.splitytransport.core.model.base.Transporte;
+import com.pwzt.ifsul.splitytransport.core.model.enumerator.TransporteStatusEnum;
 
 public class TsCancelado implements TransporteStatus{
+
     @Override
-    public ResponseMensagem autorizar() {
-        return new ResponseMensagem.Builder()
-                .descricao("Não é possivel autorizar um documento cancelado")
-                .codigo("110")
-                .erro()
-                .build();
+    public TransporteStatusEnum estadoAtual() {
+        return TransporteStatusEnum.CANCELADO;
     }
 
     @Override
-    public ResponseMensagem iniciar() {
-        return new ResponseMensagem.Builder()
-                .descricao("Não é possivel iniciar viagem já cancelada")
-                .codigo("110")
-                .erro()
-                .build();
+    public boolean podeAutorizar() {
+        return false;
     }
 
     @Override
-    public ResponseMensagem concluir() {
-        return new ResponseMensagem.Builder()
-                .descricao("Não é possivel concluir uma viajem cancelada")
-                .codigo("110")
-                .erro()
-                .build();
+    public boolean podeIniciar() {
+        return false;
     }
 
     @Override
-    public ResponseMensagem cancelar() {
+    public void autorizar(Transporte transporte) {
+        throw new DocumentoValidationException("Erro ao alterar estado", gerarMensagemErro());
+    }
 
+    @Override
+    public void iniciar(Transporte transporte) {
+        throw new DocumentoValidationException("Erro ao alterar estado", gerarMensagemErro());
+    }
+
+    @Override
+    public void concluir(Transporte transporte) {
+        throw new DocumentoValidationException("Erro ao alterar estado", gerarMensagemErro());
+    }
+
+    @Override
+    public void cancelar(Transporte transporte) {
+        throw new DocumentoValidationException("Erro ao alterar estado", gerarMensagemErro());
+    }
+
+    private ResponseMensagem gerarMensagemErro(){
         return new ResponseMensagem.Builder()
-                .descricao("Viagem cancelada com sucesso")
-                .codigo("200")
-                .sucesso()
+                .descricao(String.format("Transição de estado inválida, %s não pode ser cancelado", estadoAtual().getDescricao()))
+                .codigo("400")
+                .erro()
                 .build();
-
     }
 
 }

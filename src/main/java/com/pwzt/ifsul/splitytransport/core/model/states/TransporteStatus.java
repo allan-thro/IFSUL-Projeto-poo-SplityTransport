@@ -10,8 +10,8 @@ public interface TransporteStatus {
     boolean podeAutorizar();
     boolean podeIniciar();
 
-    void autorizar();
-    void iniciar();
-    void concluir();
-    void cancelar();
+    void autorizar(Transporte transporte);
+    void iniciar(Transporte transporte);
+    void concluir(Transporte transporte);
+    void cancelar(Transporte transporte);
 }

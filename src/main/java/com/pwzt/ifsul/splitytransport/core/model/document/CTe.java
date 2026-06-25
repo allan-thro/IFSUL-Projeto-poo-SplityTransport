@@ -21,9 +21,6 @@ public class CTe extends Documento{
     @Column(name = "CTE_NUMCTE")
     private String numeroCte;
 
-    @Column(name = "CTE_PROTOCOLO")
-    private String protocolo;
-
     @Column(name = "CTE_DHEMISSAO")
     private LocalDateTime dataHoraEmissao;
 
@@ -36,15 +33,16 @@ public class CTe extends Documento{
     @Column(name = "CTE_MUNSDET")
     private String municipioDestino;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CTE_EMITENTE", referencedColumnName = "CLI_ID")
     private Cliente emitente;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CTE_REMETENTE", referencedColumnName = "CLI_ID")
     private Cliente remetente;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CTE_DESTINATARIO", referencedColumnName = "CLI_ID")
     private Cliente destinatario;
 

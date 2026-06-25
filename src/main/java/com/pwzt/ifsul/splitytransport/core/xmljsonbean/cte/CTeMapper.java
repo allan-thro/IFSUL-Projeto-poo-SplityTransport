@@ -25,9 +25,6 @@ public class CTeMapper {
         if(cte == null) throw new DocumentoValidationException("Dados de informação do cte nulos");
 
         _returnValue.setNumeroCte(cte.getInfCTE().getTcIde().getCCT());
-        _returnValue.setChaveCte(geradorChaveCTe(cte.getInfCTE())); //
-        _returnValue.setChave(_returnValue.getChaveCte()); //
-
         _returnValue.setChaveNfe(cte.getInfCTE().getTcInfCTeNorm().getTcInfDoc().getTcInfNfe().getChave());
         _returnValue.setCodigoOperacao(cte.getInfCTE().getTcIde().getCFOP());
         _returnValue.setDataHoraEmissao(parser(cte.getInfCTE().getTcIde().getDhEmi()));
@@ -54,7 +51,7 @@ public class CTeMapper {
         _returnValue = new Cliente();
 
         _returnValue.setCpfCnpj(dest.getCNPJ());
-        _returnValue.setInscricaoEstadual(dest.getXNome());
+        _returnValue.setRazaoSocial(dest.getXNome());
 
         return _returnValue;
     }

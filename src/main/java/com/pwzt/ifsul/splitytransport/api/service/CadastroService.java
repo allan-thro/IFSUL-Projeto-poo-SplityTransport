@@ -14,6 +14,7 @@ import com.pwzt.ifsul.splitytransport.core.model.base.Filial;
 import com.pwzt.ifsul.splitytransport.core.model.base.Motorista;
 import com.pwzt.ifsul.splitytransport.core.model.base.Veiculo;
 import jakarta.validation.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -27,16 +28,18 @@ import tools.jackson.databind.ObjectMapper;
 
 public class CadastroService {
 
-    private final String ANTT_MOCK_URL = "https://localhost:8085/api/antt/cadastro";
+    private final String ANTT_MOCK_URL = "http://localhost:8085/api/antt/cadastro";
 
     private final RestClient restClient = RestClient.builder().build();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public ResponseApi cadastrarMotorista(MotoristaDTO motoristaDTO){
         Motorista motorista = objectMapper.convertValue(motoristaDTO, Motorista.class);
-        String urlMock = UriComponentsBuilder.fromPath(ANTT_MOCK_URL)
+        motorista.setValidadeCnh(motoristaDTO.getValidadeCnh());
+
+        String urlMock = UriComponentsBuilder.fromUriString(ANTT_MOCK_URL)
                 .path("/motorista")
                 .queryParam("cpf", motoristaDTO.getCpf())
                 .queryParam("nome", motorista.getNome())
@@ -44,17 +47,19 @@ public class CadastroService {
                 .toUriString();
 
         try{
-            ResponseEntity<ResponseCadastroMotoristaAntt> response = restClient.get()
+            ResponseEntity<ResponseCadastroMotoristaAntt> response = restClient.post()
                     .uri(urlMock)
                     .retrieve()
                     .toEntity(ResponseCadastroMotoristaAntt.class);
 
             if(response.getBody() != null && response.getBody().getCodigoStatusAntt().equals("100")){
+                motorista.setValidadeRntrc(response.getBody().getValidadeRntrc());
                 motorista.setRNTRC(response.getBody().getRntrc());
+
                 InjectionProvider.getMotoristaReposotory().save(motorista);
             }
 
-            return ResponseFactory.createResponseCadastroAntt(response.getBody(), response.getStatusCode().toString());
+            return ResponseFactory.createResponseCadastroMotorista(response.getBody(), String.valueOf(response.getStatusCode().value()));
         } catch (HttpStatusCodeException e){
             ResponseMensagem erro = new ResponseMensagem.Builder()
                     .descricao("Falha ao comunicar com a ANTT.")
@@ -65,7 +70,7 @@ public class CadastroService {
             throw new ComunicationException(erro);
         } catch (RestClientException e){
             ResponseMensagem erro = new ResponseMensagem.Builder()
-                    .descricao("Não foi possivel conectar com a ANTT.")
+                    .descricao(String.format("Não foi possivel conectar com a ANTT: %s", e.getMessage()))
                     .codigo("400")
                     .erro()
                     .build();
@@ -76,7 +81,9 @@ public class CadastroService {
 
     public ResponseApi cadastrarVeiculo(VeiculoDTO veiculoDTO){
         Veiculo veiculo = objectMapper.convertValue(veiculoDTO, Veiculo.class);
-        String urlMock = UriComponentsBuilder.fromPath(ANTT_MOCK_URL)
+        veiculo.setCapacidadeMaxima(veiculoDTO.getCapacidadeMaxima());
+        
+        String urlMock = UriComponentsBuilder.fromUriString(ANTT_MOCK_URL)
                 .path("/veiculo")
                 .queryParam("placa", veiculoDTO.getPlaca())
                 .queryParam("rntrc", veiculoDTO.getRntrc())
@@ -85,7 +92,7 @@ public class CadastroService {
                 .toUriString();
 
         try{
-            ResponseEntity<ResponseCadastroVeiculoAntt> response = restClient.get()
+            ResponseEntity<ResponseCadastroVeiculoAntt> response = restClient.post()
                     .uri(urlMock)
                     .retrieve()
                     .toEntity(ResponseCadastroVeiculoAntt.class);
@@ -94,7 +101,7 @@ public class CadastroService {
                 InjectionProvider.getVeiculoRepository().save(veiculo);
             }
 
-            return ResponseFactory.createResponseCadastroAntt(response.getBody(), response.getStatusCode().toString());
+            return ResponseFactory.createResponseCadastroVeiculo(response.getBody(), String.valueOf(response.getStatusCode().value()));
         } catch (HttpStatusCodeException e){
             ResponseMensagem erro = new ResponseMensagem.Builder()
                     .descricao("Falha ao comunicar com a ANTT.")

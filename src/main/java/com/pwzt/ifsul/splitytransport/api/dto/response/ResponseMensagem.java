@@ -1,5 +1,7 @@
 package com.pwzt.ifsul.splitytransport.api.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class ResponseMensagem {
         }
 
         public Builder tipoResolver(String status){
-            if(List.of("200", "100", "101").contains(status)){
+            if(List.of("200", "201", "204", "100", "101").contains(status)){
                 this.tipo = "SUCESSO";
             }
             else this.tipo = "ERRO";
@@ -57,10 +59,12 @@ public class ResponseMensagem {
         }
     }
 
+    @JsonIgnore
     public boolean isSucesso(){
         return tipo.equals("SUCESSO");
     }
 
+    @JsonIgnore
     public boolean isErro(){
         return tipo.equals("ERRO");
     }

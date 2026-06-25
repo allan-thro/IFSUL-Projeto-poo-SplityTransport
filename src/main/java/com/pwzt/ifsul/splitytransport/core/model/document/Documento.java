@@ -1,6 +1,5 @@
 package com.pwzt.ifsul.splitytransport.core.model.document;
 
-import com.pwzt.ifsul.splitytransport.core.model.converter.DocStatusConverter;
 import com.pwzt.ifsul.splitytransport.core.model.converter.DocStatusConverterEnum;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocStatusEnum;
 import jakarta.persistence.*;
@@ -15,7 +14,7 @@ public class Documento {
     @Column(name = "DOC_ID")
     private Long id;
 
-    @Convert(converter = DocStatusConverterEnum.class)
+    @Enumerated(EnumType.STRING)
     @Column(name = "DOC_STATUS")
     private DocStatusEnum status;
 

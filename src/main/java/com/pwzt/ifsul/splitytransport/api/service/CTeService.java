@@ -25,7 +25,7 @@ import org.springframework.web.client.RestClientException;
 @Service
 public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
 
-    private RestClient restClient = RestClient.builder().baseUrl("https://localhost:8085/api").build();
+    private RestClient restClient = RestClient.builder().baseUrl("http://localhost:8085/api").build();
 
     @Autowired
     private XmlJsonBeanResolver xmlJsonBeanResolver;
@@ -53,26 +53,29 @@ public class CTeService implements DocumentoService<TcCTE, ResponseCTe>{
                     .retrieve()
                     .body(ResponseCTeEmissao.class);
 
-            if(!response.getCodigo().equals("200")){
+            if(!response.getCodigo().equals("205")){
                 ResponseMensagem erro = new ResponseMensagem.Builder()
                         .descricao(response.getMotivo())
                         .codigo(response.getCodigo())
                         .erro()
                         .build();
 
+                cteBd.setStatus(DocStatusEnum.REJEITADO);
+                InjectionProvider.getCteReposotory().save(cteBd);
+
                 throw new DocumentoValidationException("CTe não autorizado pela sefaz", erro);
             }
 
-            cteBd.setChaveCte(response.getChaveCte());
-            cteBd.setProtocolo(response.getProtocolo());
+            cteBd.setChave(response.getChaveCte());
             cteBd.setXmlEnvio(xmlEnvio);
+            cteBd.setStatus(DocStatusEnum.AUTORIZADO);
 
             transporte.setCte(cteBd);
 
             InjectionProvider.getCteReposotory().save(cteBd);
             InjectionProvider.getTransporteRepository().save(transporte);
 
-            return ResponseFactory.emissaoCTeSucesso(cteBd.getChaveCte());
+            return ResponseFactory.emissaoCTeSucesso(response.getChaveCte());
 
         }catch (HttpStatusCodeException e){
             ResponseMensagem erro = new ResponseMensagem.Builder()

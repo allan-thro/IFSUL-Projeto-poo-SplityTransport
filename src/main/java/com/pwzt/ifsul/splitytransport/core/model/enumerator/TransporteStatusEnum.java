@@ -7,7 +7,11 @@ import lombok.Getter;
 @Getter
 
 public enum TransporteStatusEnum {
-    RASCUNHO(1, "Rascunho");
+    CANCELADO(1, "Cancelado"),
+    DOCUMENTOS_AUTORIZADOS(2, "Documentos Autorizados"),
+    EM_TRANSITO(3, "Em Trânsito"),
+    ENTREGUE(4, "Entregue"),
+    RASCUNHO(5, "Rascunho");
 
     private final Integer codigo;
     private final String descricao;

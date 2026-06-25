@@ -1,5 +1,6 @@
 package com.pwzt.ifsul.splitytransport.api.dto.response.cte;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pwzt.ifsul.splitytransport.core.model.enumerator.DocStatusEnum;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseCTeEmissao extends ResponseCTe{
 
     @JsonProperty("chave_cte")
@@ -20,8 +22,6 @@ public class ResponseCTeEmissao extends ResponseCTe{
     @JsonProperty("data_autorizacao")
     private LocalDateTime dataAutorizacao;
 
-    private DocStatusEnum status;
-    private String protocolo;
     private String codigo;
     private String motivo;
 

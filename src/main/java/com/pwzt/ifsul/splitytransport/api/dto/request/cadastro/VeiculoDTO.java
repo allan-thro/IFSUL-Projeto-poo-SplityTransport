@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,6 +20,6 @@ public class VeiculoDTO {
     private String rntrc;
 
     @JsonProperty("capacidade_maxima")
-    private String capacidadeMaxima;
+    private BigDecimal capacidadeMaxima;
 
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,5 +20,8 @@ public class MotoristaDTO {
     private String email;
 
     private String cpf;
+
+    @JsonProperty("validade_cnh")
+    private LocalDate validadeCnh;
 
 }

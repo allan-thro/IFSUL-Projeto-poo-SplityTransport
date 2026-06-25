@@ -13,16 +13,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
-
 public class TransporteService {
 
-    @Qualifier("transporteValidationChain")
     private final TransporteValidationHandler validarionChain;
+
+    public TransporteService(
+            @Qualifier("transporteValidationChain") TransporteValidationHandler validacaoChain) {
+        this.validarionChain = validacaoChain;
+    }
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -43,7 +46,7 @@ public class TransporteService {
 
         if(!erroList.isEmpty()) throw new TransporteValidationException("Erro nas validações, impossivel autorizar transporte", erroList);
 
-        transporte.getTransporteStatus().autorizar();
+        transporte.getTransporteStatus().autorizar(transporte);
         InjectionProvider.getTransporteRepository().save(transporte);
 
         return ResponseFactory.createResponseSucesso("200", String.format("Transporte %d autorizado com sucesso, aguardando inicio da viagem", id));
@@ -53,7 +56,8 @@ public class TransporteService {
         Transporte transporte = InjectionProvider.getTransporteRepository().findById(id)
                 .orElseThrow(() -> new TransporteValidationException("Não foi possivel localizar o transporte para inicia-lo"));
 
-        transporte.getTransporteStatus().iniciar();
+        transporte.getTransporteStatus().iniciar(transporte);
+        transporte.setDataHoraInicio(LocalDateTime.now());
 
         InjectionProvider.getTransporteRepository().save(transporte);
 
@@ -64,7 +68,9 @@ public class TransporteService {
         Transporte transporte = InjectionProvider.getTransporteRepository().findById(id)
                 .orElseThrow(() -> new TransporteValidationException("Não foi possivel localizar o transporte para conclui-lo"));
 
-        transporte.getTransporteStatus().concluir();
+        transporte.getTransporteStatus().concluir(transporte);
+        transporte.setDataHoraTermino(LocalDateTime.now());
+
         InjectionProvider.getTransporteRepository().save(transporte);
 
         return ResponseFactory.createResponseSucesso("200", String.format("Viagem concluida com sucesso para transporte: %d", id));

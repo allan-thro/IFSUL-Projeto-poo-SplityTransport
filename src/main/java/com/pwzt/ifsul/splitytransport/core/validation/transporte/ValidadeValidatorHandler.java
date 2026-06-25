@@ -16,7 +16,7 @@ public class ValidadeValidatorHandler extends TransporteValidationHandler{
     protected ValidationResult validar(Transporte transporte) {
         List<ResponseMensagem> erros = new ArrayList<>();
 
-        if(transporte.getMotorista().getValidadeCnh().isAfter(LocalDate.now())){
+        if(transporte.getMotorista().getValidadeCnh().isBefore(LocalDate.now())){
             erros.add(
                     new ResponseMensagem.Builder()
                             .descricao("Validade da CNH do motorista está vencia")
@@ -26,7 +26,7 @@ public class ValidadeValidatorHandler extends TransporteValidationHandler{
             );
         }
 
-        if(transporte.getMotorista().getValidadeRntrc().isAfter(LocalDate.now())){
+        if(transporte.getMotorista().getValidadeRntrc().isBefore(LocalDate.now())){
             erros.add(
                     new ResponseMensagem.Builder()
                             .descricao("Validade do Rntrc do motorista está vencica")

@@ -8,11 +8,15 @@ import jakarta.persistence.Converter;
 public class DocStatusConverterEnum implements AttributeConverter<DocStatusEnum, String>{
     @Override
     public String convertToDatabaseColumn(DocStatusEnum attribute) {
-        return "";
+        return attribute.getDescricao();
     }
 
     @Override
     public DocStatusEnum convertToEntityAttribute(String dbData) {
-        return null;
+        for(DocStatusEnum status : DocStatusEnum.values()){
+            if(status.getDescricao().equals(dbData)) return status;
+        }
+
+        throw new IllegalArgumentException("Enum Documento inválido");
     }
 }

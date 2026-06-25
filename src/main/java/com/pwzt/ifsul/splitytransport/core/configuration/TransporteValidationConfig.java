@@ -16,9 +16,8 @@ public class TransporteValidationConfig {
             StatusValidatorHandler statusValidatorHandler,
             ValidadeValidatorHandler validadeValidatorHandler
     ){
-        coerenciaValidatorHandler
-                .setProximo(statusValidatorHandler)
-                .setProximo(validadeValidatorHandler);
+        coerenciaValidatorHandler.setProximo(statusValidatorHandler);
+        statusValidatorHandler.setProximo(validadeValidatorHandler);
 
         return coerenciaValidatorHandler;
     }

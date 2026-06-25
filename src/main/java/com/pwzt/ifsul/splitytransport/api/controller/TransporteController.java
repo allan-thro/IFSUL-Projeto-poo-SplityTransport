@@ -33,7 +33,7 @@ public class TransporteController {
         return ResponseEntity.status(HttpStatus.OK).body(resposta);
     }
 
-    @PostMapping("/inciar")
+    @PostMapping("/iniciar")
     public ResponseEntity<ResponseApi> iniciarTransporte(@RequestParam Long id){
         ResponseApi resposta = transporteService.iniciarTranporte(id);
         return ResponseEntity.status(HttpStatus.OK).body(resposta);
